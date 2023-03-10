@@ -1,41 +1,61 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: majrou <majrou@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/04 00:58:49 by majrou            #+#    #+#             */
-/*   Updated: 2023/03/08 01:36:39 by majrou           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minitalk.h"
 
-int	send_Char_to_server(pid_t PID, unsigned char	string)
+int	ft_atoi(char *str)
 {
-	unsigned char	bit;
+	long	nb;
+	int		len;
+	int		i;
 
-	bit = 0b10000000;
-	while (bit)
+	len = 0;
+	while (str && str[len])
+		len++;
+	i = 0;
+	nb = 0;
+	while (i < len)
+		nb = (nb * 10) + (str[i++] - 48);
+	return (nb);
+}
+
+void	ft_send_signal(int pid, char c)
+{
+	int	arr[8];
+	int	n;
+	int	i;
+
+	n = c;
+	i = 7;
+	while (i >= 0)
 	{
-		if (bit && string)
-		{
-			if (kill(PID, SIGUSR1) == -1)
-				return (0);
-		}
+		if (n == 0 || (n & 1) == 0)
+			arr[i] = 0;
+		else if ((n & 1) == 1)
+			arr[i] = 1;
+		if (n > 0)
+			n >>= 1;
+		i--;
+	}
+	while (++i < 8)
+	{
+		if (arr[i] == 0)
+			kill(pid, SIGUSR1);
 		else
-		{
-			if (kill(PID, SIGUSR2) == -1)
-				return (0);
-		}
-		bit >>= 1;
+			kill(pid, SIGUSR2);
 		usleep(100);
 	}
-	return (1);
 }
 
 int	main(int ac, char **av)
 {
+	int	pid;
+
+	if (ac != 3)
+		ft_printf("somting is error ");
+	else
+	{
+		pid = ft_atoi(av[1]);
+		while (av[2] && *av[2])
+			ft_send_signal(pid, *av[2]++);
+		ft_send_signal(pid, '\n');
+	}
 	return (0);
 }

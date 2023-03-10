@@ -14,9 +14,8 @@
 # define MINITALK_H
 
 # include <signal.h>
-# include "libft/libft.h"
 # include "ft_printf/ft_printf.h"
 
-int		send_Char_to_server(pid_t PID, unsigned char	string);
+void  ft_send_signal(int pid, char c);
 
 #endif

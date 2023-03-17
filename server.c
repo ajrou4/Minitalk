@@ -12,13 +12,19 @@
 
 #include "minitalk.h"
 
-void	signal_handler(int signal, siginfo_t *info)
+void	signal_handler(int sig, siginfo_t *info, void *message)
 {
 	static int				i = 7;
 	static unsigned char	c;
+	static int				client_pid;
 
-	ft_printf("Received signal %d from process %d\n", signal, info->si_pid);
-	if (signal == SIGUSR1)
+	(void)message;
+	if (client_pid != info->si_pid)
+	{
+		client_pid = info->si_pid;
+		i = 7;
+	}
+	if (sig == SIGUSR1)
 		c ^= 1 << i;
 	i--;
 	if (i == -1)
@@ -31,14 +37,15 @@ void	signal_handler(int signal, siginfo_t *info)
 
 int	main(void)
 {
-	pid_t	server_pid;
-	// struct sigaction info;
+	pid_t				server_pid;
+	struct sigaction	info;
 
-	// info.sa_handler;
+	info.sa_sigaction = &signal_handler;
+	info.sa_flags = SA_SIGINFO;
 	server_pid = getpid();
 	ft_printf("Server PID: %d\n", server_pid);
-	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
+	sigaction(SIGUSR1, &info, NULL);
+	sigaction(SIGUSR2, &info, NULL);
 	while (1)
 	{
 		pause();

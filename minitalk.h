@@ -6,7 +6,7 @@
 /*   By: majrou <majrou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 04:28:25 by majrou            #+#    #+#             */
-/*   Updated: 2023/03/16 00:04:46 by majrou           ###   ########.fr       */
+/*   Updated: 2023/03/20 00:55:58 by majrou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "ft_printf/ft_printf.h"
 
 int		ft_atoi(char *str);
-void	signal_handler(int signal, siginfo_t *info);
+void	signal_handler(int sig, siginfo_t *info, void *message);
+void	message_valide(int sig);
 
 #endif

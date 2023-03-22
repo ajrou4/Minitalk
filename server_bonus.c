@@ -6,7 +6,7 @@
 /*   By: majrou <majrou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 05:52:32 by majrou            #+#    #+#             */
-/*   Updated: 2023/03/20 00:58:39 by majrou           ###   ########.fr       */
+/*   Updated: 2023/03/21 22:18:15 by majrou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	signal_handler(int sig, siginfo_t *info, void *message)
 	if (i == -1)
 	{
 		if (c == '\0')
-			kill(client_pid, SIGUSR2);
+			kill(client_pid, SIGUSR1);
 		write(1, &c, 1);
 		i = 7;
 		c = 0;
